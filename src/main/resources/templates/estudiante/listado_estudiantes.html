@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{principal/principal :: head}"></head>
+<body>
+	<header th:replace="~{principal/principal :: header}"></header>
+	<div class="container py-4">
+		<div class="card bg-light">
+			<div class="card-header">
+				<h3 class="text-secondary" th:text="${titulo}"></h3>
+			</div>
+			<div class="card-body shadow-lg p-3">
+				<h4 class="card-title">
+					<a class="btn btn-outline-success btn-sm" th:href="@{/academia/estudiantenuevo}">Crear estudiante</a>
+				</h4>
+				<table class="table table-striped table-sm" th:if="${not #lists.isEmpty(estudiantes)}">
+					<tr>
+						<th>Id.</th>
+						<th>Identificación</th>
+						<th>Apellidos</th>
+						<th>Nombres</th>
+						<th class="text-center">Semestre actual</th>
+						<th class="text-center">Acciones</th>
+					</tr>
+					<tr th:each="est : ${estudiantes}">
+						<td><a th:href="@{/academia/estudianteconsultar/} + ${est.id}" 
+							th:text="${#numbers.formatInteger(est.id, 3)}" class="btn btn-outline-secondary btn-xs"></a></td>
+						<td th:text="${est.identificacion}"></td>
+						<td th:text="${est.apellidos}"></td>
+						<td th:text="${est.nombres}"></td>
+						<td th:text="${#numbers.formatInteger(est.semestre_actual, 1, 'POINT')}" class="text-center pr-2"></td>
+						<td class="text-center">
+							<a th:href="@{/academia/matricular_curso/} + ${est.id}" title="matricular">
+								<i class="bi-file-spreadsheet" style="color: darkgreen"></i></a>&nbsp;
+							<a th:href="@{/academia/estudiantemodificar/} + ${est.id}" title="editar">
+								<i class="bi-pencil-fill" style="color: cornflowerblue"></i></a>&nbsp;
+							<a th:href="@{/academia/estudianteeliminar/} + ${est.id}" title="eliminar"
+								onclick="return confirm('Está seguro de elminar el estudiante ?')">
+								<i class="bi-eraser-fill" style="color: indianred"></i></a>
+						</td>
+					</tr>
+				</table>
+				<div class="alert alert-warning" th:if="${#lists.isEmpty(estudiantes)}">No hay estudiantes para mostrar</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="~{principal/principal :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:replace="~{principal/principal :: head}"></head>
+
+<body>
+  <header th:replace="~{principal/principal :: header}"></header>
+  <div class="container py-4">
+    <div class="card bg-light">
+      <div class="card-header">
+        <h3 class="text-secondary" th:text="${titulo}"></h3>
+      </div>
+      <div class="card-body shadow-lg p-3">
+        <h4 class="card-title text-right">
+          <a th:href="@{/academia/matricular_curso/} + ${estudiante.id}" title="matricular"
+            class="btn btn-outline-success btn-sm">Matricular Curso</a>
+        </h4>
+        <ul class="list-group">
+          <li class="list-group-item"><b>Identificación: </b><i th:text="${estudiante.identificacion}"></i></li>
+          <li class="list-group-item"><b>Apellidos: </b><i th:text="${estudiante.apellidos}"></i></li>
+          <li class="list-group-item"><b>Nombres: </b><i th:text="${estudiante.nombres}"></i></li>
+          <li class="list-group-item"><b>Semestre Actual: </b><i th:text="${estudiante.semestre_actual}"></i></li>
+        </ul>
+
+        <table th:if="${not #lists.isEmpty(estudiante.curso_Matriculado)}" 
+          class="table table-striped table-bordered table-sm mt-4">
+      
+        <thead class="thead-dark">
+          <tr>
+            <th>Nro. Matrícula</th>
+            <th>Periodo</th>
+            <th>Estado del Curso</th>
+            <th>Nota Final</th>
+            <th>Asignatura</th>
+            <th>Créditos</th>
+            <th>Horario</th>
+            <th>Aula</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="mat : ${estudiante.curso_Matriculado}">
+            <td th:text="${mat.id}"></td>
+            <td th:text="${mat.periodo}"></td>
+            <td th:text="${mat.estado_curso}"></td>
+            <td th:text="${#numbers.formatDecimal(mat.nota_final, 0, 'COMMA', 1, 'POINT')}"></td>
+            <td th:text="${mat.curso?.asignatura?.nombre ?: 'N/A'}"></td>
+            <td th:text="${mat.curso?.asignatura?.numero_creditos ?: 'N/A'}"></td>
+            <td th:text="${mat.curso?.horario ?: 'N/A'}"></td>
+            <td th:text="${mat.curso?.aula ?: 'N/A'}"></td>
+        </tbody>
+      </table>
+      
+      <div th:text="'No hay cursos matriculados del estudiante ' + ${estudiante.apellidos} + ' '+ ${estudiante.nombres}"
+        th:if="${#lists.isEmpty(estudiante.curso_Matriculado)}" class="alert alert-info mt-3">
+      </div>
+        
+        <div class="text-right mt-3">
+          <a th:href="@{/academia/estudiantelistar}" class="btn btn-sm btn-light">&laquo; Regresar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer th:replace="~{principal/principal :: footer}"></footer>
+</body>
+
+</html>

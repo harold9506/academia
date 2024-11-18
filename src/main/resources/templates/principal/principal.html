@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+
+<head th:fragment="head">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${msg}"></title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            margin-top: 70px; /* Ajusta este valor si lo necesitas */
+        }
+
+        footer {
+            margin-top: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" th:href="@{/academia/inicio}">
+                    <img th:src="@{/img/nproducto.png}" alt="Logo" class="logo-img me-2" style="height: 40px;" />
+                    <span class="fw-bold text-primary">Academia</span>
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link px-3 active" th:href="@{/academia/inicio}"><i class="bi bi-house-door me-2"></i> Inicio</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                              <div class="dropdown-menu">
+                                <li><a class="dropdown-item py-2" th:href="@{/academia/estudiantelistar}"><i class="bi bi-mortarboard me-2"></i> Estudiantes</a></li>
+                                <li><a class="dropdown-item py-2" th:href="@{/academia/profesorlistar}"><i class="bi bi-person-workspace me-2"></i> Profesores</a></li>
+                                <li><a class="dropdown-item py-2" th:href="@{/academia/cursolistar}"><i class="bi bi-book me-2"></i> Cursos</a></li>
+                              </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <footer class="bg-light text-light py-3" th:fragment="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <img th:src="@{/img/productobajo.png}" alt="Logo" class="logo" />
+                    <p class="text-muted small">
+                        Desarrollado con Java, Spring Framework 6 & Spring Boot 3
+                        Desarrollo Web 1 - Harold Martinez. &copy;
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts de JavaScript -->
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+
+</html>

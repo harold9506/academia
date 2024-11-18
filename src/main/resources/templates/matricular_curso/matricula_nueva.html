@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head th:replace="~{principal/principal :: head}">
+</head>
+<body>
+    <header th:replace="~{principal/principal :: header}"></header>
+    <div class="container py-4 cw-60">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h3 class="text-secondary" th:text="${titulo}"></h3>
+            </div>
+            <div class="card-body">
+                <h4 class="card-title text-right">
+                    <a th:href="@{/academia/estudianteconsultar/} + ${matricula.estudiante.id}" title="regresar"
+                       class="btn btn-light btn-sm">&laquo; Regresar</a>
+                </h4>
+                <form method="post" th:object="${matricula}" th:action="@{/academia/guardar_matricula}">
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label" th:text="'Estudiante'"></label>
+                        <div class="col-sm-9">
+                            <input type="text" th:value="${matricula.estudiante.nombres + ' ' + matricula.estudiante.apellidos} " class="form-control" disabled="disabled" />
+                        </div>
+                    </div>
+
+                    <!-- Selección de asignatura -->
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" for="asignatura" th:text="'Asignatura'"></label>
+						<div class="col-sm-9">
+							<select id="asignatura" name="asignatura_id" class="form-select" onchange="cargarDetallesAsignatura(this.value)">
+								<option value="" disabled selected>Seleccione una asignatura</option>
+								<option th:each="asignatura : ${asignaturas}" th:value="${asignatura.id}" th:text="${asignatura.nombre}"></option>
+							</select>
+						</div>
+					</div>
+
+                    <!-- Selección de curso -->
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" for="curso" th:text="'Curso'"></label>
+						<div class="col-sm-9">
+							<select id="curso" name="curso_id" class="form-select" onchange="cargarDetallesCurso(this.value)">
+								<option value="" disabled selected>Seleccione un curso</option>
+								<option th:each="curso : ${cursos}" th:value="${curso.id}" th:text="${curso.periodo}"></option>
+							</select>
+						</div>
+					</div>
+
+                    <!-- Detalles del curso -->
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" th:text="'Créditos'"></label>
+						<div class="col-sm-9">
+							<input type="text" id="creditos" class="form-control" disabled="disabled" />
+						</div>
+					</div>
+					
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" for="periodo" th:text="'Periodo'"></label>
+						<div class="col-sm-9">
+							<input id="periodo" type="text" class="form-control" disabled />
+						</div>
+					</div>
+					
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" for="horario" th:text="'Horario'"></label>
+						<div class="col-sm-9">
+							<input id="horario" type="text" class="form-control" disabled />
+						</div>
+					</div>
+
+                    <div class="mb-3 row mt-4">
+                        <div class="col-sm-6">
+                            <input type="submit" th:value="${btn_accion}" class="btn btn-outline-secondary" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="~{principal/principal :: footer}"></footer>
+</body>
+</html>
