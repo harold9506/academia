@@ -47,8 +47,8 @@ public class Asignatura implements Serializable{
             Asignatura_Planes asignatura_Planes){
         this.id = id;
         this.nombre = nombre;
-        this. numero_creditos = numero_creditos;
-        this. departamento = departamento;
+        this.numero_creditos = numero_creditos;
+        this.departamento = departamento;
     }
 
     public static long getSerialversionuid() {

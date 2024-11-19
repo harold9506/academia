@@ -18,7 +18,7 @@ public interface AcademiaServiceIface {
 	//public Estudiante buscarEstudianteConDetalles(Long id);
 
 	// servicios para curso Matriculado
-	public void guardarCusuoMatriculado(Curso_Matriculado matricular);
+	public void guardarCusuoMatriculado(Curso_Matriculado cursos_matriculados);
 
 	//servicio asignatura
 	public List<Asignatura>listarAsignaturas();
@@ -26,7 +26,7 @@ public interface AcademiaServiceIface {
 
 	//servicio curso
 	public List<Curso>listarCursos();
-	public List<Curso>buscarCursosTodos();
+	//public List<Curso>buscarCursosTodos();
 	public Curso buscarCursoPorId(Long id);
 	public void guardarCurso(Curso curso);
 	public List<Curso>listarCursosPorAsignaturaId(Long asignaturaId);

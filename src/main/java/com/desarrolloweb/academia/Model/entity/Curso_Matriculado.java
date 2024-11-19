@@ -1,17 +1,7 @@
 package com.desarrolloweb.academia.Model.entity;
 
 import java.io.Serializable;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
@@ -30,7 +20,7 @@ public class Curso_Matriculado implements Serializable {
     @JoinColumn(name = "estudiante_id")
     private Estudiante estudiante;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "curso_id")
     private Curso curso;
 
@@ -38,31 +28,26 @@ public class Curso_Matriculado implements Serializable {
 	@Column(name = "periodo", length = 50, nullable = false)
 	private String periodo;
 
-    @NotEmpty
+    @NotEmpty(message = "El estado del curso no puede estar vacío")
 	@Column(name = "estado_curso", length = 20, nullable = false)
 	private String estado_curso;
 
     @DecimalMin(value = "0.0")
     @DecimalMax(value = "5.0")
     @Column(nullable = false)
-    private double nota_final;
+    private Double nota_final;
 
+    // Constructor y Getters/Setters
     public Curso_Matriculado() {
-
     }
 
-    public Curso_Matriculado (Long id, Estudiante estudiante, Curso curso, String periodo, 
-            String estado_curso, double nota_final){
+    public Curso_Matriculado(Long id, Estudiante estudiante, Curso curso, String periodo, String estado_curso, double nota_final) {
         this.id = id;
         this.estudiante = estudiante;
         this.curso = curso;
         this.periodo = periodo;
         this.estado_curso = estado_curso;
         this.nota_final = nota_final;
-    }
-
-    public static long getSerialversionuid() {
-        return serialVersionUID;
     }
 
     public Long getId() {
@@ -105,13 +90,13 @@ public class Curso_Matriculado implements Serializable {
         this.estado_curso = estado_curso;
     }
 
-    public double getNota_final() {
+    public Double getNota_final() {
         return nota_final;
     }
 
     public void setNota_final(double nota_final) {
         this.nota_final = nota_final;
     }
-    
+
     
 }

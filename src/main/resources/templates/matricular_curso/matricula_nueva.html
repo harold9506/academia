@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
-<head th:replace="~{principal/principal :: head}">
-</head>
+<head th:replace="~{principal/principal :: head}"></head>
 <body>
     <header th:replace="~{principal/principal :: header}"></header>
     <div class="container py-4 cw-60">
@@ -15,67 +14,153 @@
                        class="btn btn-light btn-sm">&laquo; Regresar</a>
                 </h4>
                 <form method="post" th:object="${matricula}" th:action="@{/academia/guardar_matricula}">
+					<input type="hidden" name="estudiante.id" th:value="${matricula.estudiante.id}" />
 
+                    <!-- Estudiante -->
                     <div class="mb-3 row">
                         <label class="col-sm-3 col-form-label" th:text="'Estudiante'"></label>
                         <div class="col-sm-9">
-                            <input type="text" th:value="${matricula.estudiante.nombres + ' ' + matricula.estudiante.apellidos} " class="form-control" disabled="disabled" />
+                            <input type="text" th:value="${matricula.estudiante.nombres + ' ' + matricula.estudiante.apellidos}" class="form-control" disabled="disabled" />
+                        </div>
+                    </div>
+					
+                    <!-- Selección de asignatura -->
+                    <div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label" for="asignatura" th:text="'Asignatura'"></label>
+                        <div class="col-sm-9">
+							<select name="curso.asignatura" id="asignatura" class="form-control" onchange="cargarDetalles()">
+								<option value="">Seleccione una asignatura</option>
+								<th:block th:each="asignatura : ${asignaturas}">
+									<option th:value="${asignatura.id}" th:text="${asignatura.nombre}"></option>
+								</th:block>
+							</select>
                         </div>
                     </div>
 
-                    <!-- Selección de asignatura -->
+                    <!-- Créditos de la asignatura -->
 					<div class="mb-3 row">
-						<label class="col-sm-3 col-form-label" for="asignatura" th:text="'Asignatura'"></label>
+						<label for="col-sm-3 col-form-label" th:text="'Créditos'" class="col-sm-3 col-form-label"></label>
 						<div class="col-sm-9">
-							<select id="asignatura" name="asignatura_id" class="form-select" onchange="cargarDetallesAsignatura(this.value)">
-								<option value="" disabled selected>Seleccione una asignatura</option>
-								<option th:each="asignatura : ${asignaturas}" th:value="${asignatura.id}" th:text="${asignatura.nombre}"></option>
-							</select>
+							<input type="text" id="numero_creditos" name="curso.asignatura.numero_creditos" class="form-control" readonly />
 						</div>
 					</div>
+					
 
-                    <!-- Selección de curso -->
 					<div class="mb-3 row">
-						<label class="col-sm-3 col-form-label" for="curso" th:text="'Curso'"></label>
-						<div class="col-sm-9">
-							<select id="curso" name="curso_id" class="form-select" onchange="cargarDetallesCurso(this.value)">
-								<option value="" disabled selected>Seleccione un curso</option>
-								<option th:each="curso : ${cursos}" th:value="${curso.id}" th:text="${curso.periodo}"></option>
-							</select>
-						</div>
-					</div>
+                        <label class="col-sm-3 col-form-label" th:text="'Departamento'"></label>
+                        <div class="col-sm-9">
+                            <input type="text" id="departamento" name="curso.asignatura.departamento" class="form-control" readonly/>
+                        </div>
+                    </div>
 
                     <!-- Detalles del curso -->
 					<div class="mb-3 row">
-						<label class="col-sm-3 col-form-label" th:text="'Créditos'"></label>
+						<label class="col-sm-3 col-form-label" th:text="'ID Curso'"></label>
 						<div class="col-sm-9">
-							<input type="text" id="creditos" class="form-control" disabled="disabled" />
-						</div>
-					</div>
-					
-					<div class="mb-3 row">
-						<label class="col-sm-3 col-form-label" for="periodo" th:text="'Periodo'"></label>
-						<div class="col-sm-9">
-							<input id="periodo" type="text" class="form-control" disabled />
-						</div>
-					</div>
-					
-					<div class="mb-3 row">
-						<label class="col-sm-3 col-form-label" for="horario" th:text="'Horario'"></label>
-						<div class="col-sm-9">
-							<input id="horario" type="text" class="form-control" disabled />
+							<input type="text" id="id" name="curso.id" class="form-control" readonly/>
 						</div>
 					</div>
 
-                    <div class="mb-3 row mt-4">
-                        <div class="col-sm-6">
-                            <input type="submit" th:value="${btn_accion}" class="btn btn-outline-secondary" />
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" th:text="'Periodo'"></label>
+						<div class="col-sm-9">
+							<input type="text" id="periodo" name="curso.periodo" class="form-control" readonly/>
+						</div>
+					</div>
+					
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" th:text="'Horario'"></label>
+						<div class="col-sm-9">
+							<input type="text" id="horario" name="curso.horario" class="form-control" readonly/>
+						</div>
+					</div>
+					
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" th:text="'Cupo Máximo'"></label>
+						<div class="col-sm-9">
+							<input type="text" id="cupo_maximo" name="curso.cupo_maximo" class="form-control" readonly/>
+						</div>
+					</div>
+					
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" th:text="'Aula'"></label>
+						<div class="col-sm-9">
+							<input type="text" id="aula" name="curso.aula" class="form-control" readonly/>
+						</div>
+					</div>
+
+					<!-- Nota Final -->
+
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" th:text="'Estado del Curso'"></label>
+						<div class="col-sm-9">
+							<select id="estado_curso" name="estado_curso" class="form-control" required>
+								<option value="">Seleccione un estado</option>
+								<option value="Inscrito">Inscrito</option>
+								<option value="En Curso">En Curso</option>
+								<option value="Completado">Completado</option>
+								<option value="Abandonado">Abandonado</option>
+							</select>
+							<div class="invalid-feedback">
+								Por favor seleccione un estado del curso
+							</div>
+						</div>
+					</div>
+
+					<div class="mb-3 row">
+						<label class="col-sm-3 col-form-label" th:text="'Nota Final'"></label>
+						<div class="col-sm-9">
+							<input type="number" id="nota_final" name="curso_matriculado.nota_final" class="form-control" min="0" max="10" />
+						</div>
+					</div>
+
+                    <div class="mb-3 row">
+                        <div class="col-sm-9 offset-sm-3">
+                            <button type="submit" class="btn btn-primary">Guardar Matrícula</button>
                         </div>
                     </div>
+
                 </form>
             </div>
         </div>
     </div>
-    <footer th:replace="~{principal/principal :: footer}"></footer>
+
+    <script th:inline="javascript">
+		function cargarDetalles() {
+			var asignaturaId = document.getElementById("asignatura").value;
+			console.log("ID de la asignatura seleccionada:", asignaturaId);
+
+			if (asignaturaId) {
+				// Primero, obtener detalles de la asignatura
+				fetch('/academia/obtenerDetallesAsignatura/' + asignaturaId)
+					.then(response => response.json())
+					.then(data => {
+						console.log('Detalles de la asignatura:', data);
+						document.getElementById("numero_creditos").value = data.numero_creditos || 'No disponible';
+						document.getElementById("departamento").value = data.departamento || 'No disponible';
+					})
+					.catch(error => {
+						console.error('Error al obtener detalles de la asignatura:', error);
+					});
+
+				// Luego, obtener detalles del curso asociado a la asignatura
+				fetch('/academia/obtenerDetallesCursoPorAsignatura/' + asignaturaId)
+					.then(response => response.json())
+					.then(data => {
+						console.log('Detalles del curso:', data);
+						document.getElementById("id").value = data.id || 'No disponible';
+						document.getElementById("periodo").value = data.periodo || 'No disponible';
+						document.getElementById("horario").value = data.horario || 'No disponible';
+						document.getElementById("cupo_maximo").value = data.cupo_maximo || 'No disponible';
+						document.getElementById("aula").value = data.aula || 'No disponible';
+					})
+					.catch(error => {
+						console.error('Error al obtener detalles del curso:', error);
+					});
+			} else {
+				console.log("No se ha seleccionado una asignatura");
+			}
+		}	
+    </script>
 </body>
 </html>
