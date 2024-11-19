@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.desarrolloweb.academia.Model.entity.Asignatura;
-import com.desarrolloweb.academia.Model.entity.Curso_Matriculado;
 import com.desarrolloweb.academia.Model.entity.Estudiante;
 import com.desarrolloweb.academia.Model.entity.Programa_Academico;
 import com.desarrolloweb.academia.Model.service.AcademiaServiceIface;

@@ -33,12 +33,12 @@
 						<td th:text="${#numbers.formatInteger(est.semestre_actual, 1, 'POINT')}" class="text-center pr-2"></td>
 						<td class="text-center">
 							<a th:href="@{/academia/matricular_curso/} + ${est.id}" title="matricular">
-								<i class="bi-file-spreadsheet" style="color: darkgreen"></i></a>&nbsp;
+								<i class="bi bi-folder2-open" style="color: rgb(226, 157, 8)"></i></a>&nbsp;
 							<a th:href="@{/academia/estudiantemodificar/} + ${est.id}" title="editar">
 								<i class="bi-pencil-fill" style="color: cornflowerblue"></i></a>&nbsp;
 							<a th:href="@{/academia/estudianteeliminar/} + ${est.id}" title="eliminar"
 								onclick="return confirm('Está seguro de elminar el estudiante ?')">
-								<i class="bi-eraser-fill" style="color: indianred"></i></a>
+								<i class="bi-eraser-fill" style="color: rgb(231, 10, 10)"></i></a>
 						</td>
 					</tr>
 				</table>
