@@ -10,11 +10,13 @@ import com.desarrolloweb.academia.Model.dao.CursoDAOIface;
 import com.desarrolloweb.academia.Model.dao.Curso_MatriculadoDAOIface;
 import com.desarrolloweb.academia.Model.dao.EstudianteDAOIface;
 import com.desarrolloweb.academia.Model.dao.ProfesorDAOIface;
+import com.desarrolloweb.academia.Model.dao.ProgramaAcaDAOIface;
 import com.desarrolloweb.academia.Model.entity.Asignatura;
 import com.desarrolloweb.academia.Model.entity.Curso;
 import com.desarrolloweb.academia.Model.entity.Curso_Matriculado;
 import com.desarrolloweb.academia.Model.entity.Estudiante;
 import com.desarrolloweb.academia.Model.entity.Profesor;
+import com.desarrolloweb.academia.Model.entity.Programa_Academico;
 
 @Service
 public class AcademiaIService implements AcademiaServiceIface{
@@ -24,14 +26,16 @@ public class AcademiaIService implements AcademiaServiceIface{
     private final AsignaturaDAOIface asignaturaDAO;
     private final CursoDAOIface cursoDAO;
     private final ProfesorDAOIface profesorDAO;
+    private final ProgramaAcaDAOIface programaacaDAO;
 
     public AcademiaIService(EstudianteDAOIface estudianteDAO, Curso_MatriculadoDAOIface cursomatriculadoDAO, AsignaturaDAOIface asignaturaDAO,
-                             CursoDAOIface cursoDAO, ProfesorDAOIface profesorDAO) {
+                             CursoDAOIface cursoDAO, ProfesorDAOIface profesorDAO, ProgramaAcaDAOIface programaacaDAO) {
         this.estudianteDAO = estudianteDAO;
         this.cursomatriculadoDAO = cursomatriculadoDAO;
         this.asignaturaDAO = asignaturaDAO;
         this.cursoDAO = cursoDAO;
         this.profesorDAO = profesorDAO;
+        this.programaacaDAO = programaacaDAO;
     }
 
     // Servicios de Estudiante
@@ -109,6 +113,19 @@ public class AcademiaIService implements AcademiaServiceIface{
     @Transactional(readOnly = true)
     public List<Profesor> buscarProfesoresTodos() {
         return profesorDAO.findAll();
+    }
+
+    //servicios programa academico
+    @Override
+    @Transactional(readOnly = true)
+    public List<Programa_Academico> listarProgramasAca() {
+        return programaacaDAO.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Programa_Academico buscarPromAcaPorId(Long id) {
+        return programaacaDAO.findById(id).orElse(null);
     }
     
     

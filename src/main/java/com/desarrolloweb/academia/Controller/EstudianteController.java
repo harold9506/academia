@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.desarrolloweb.academia.Model.entity.Asignatura;
+import com.desarrolloweb.academia.Model.entity.Curso_Matriculado;
 import com.desarrolloweb.academia.Model.entity.Estudiante;
+import com.desarrolloweb.academia.Model.entity.Programa_Academico;
 import com.desarrolloweb.academia.Model.service.AcademiaServiceIface;
 
 import jakarta.validation.Valid;
@@ -46,32 +49,53 @@ public class EstudianteController {
         return "estudiante/listado_estudiantes";
     }
 
+    //nuevo
     @GetMapping("/estudiantenuevo")
     public String estudianteNuevo(Model model) {
+        //mostrar los programas academicos
+        List<Programa_Academico> programa_academico = academiaService.listarProgramasAca();
+
+        Estudiante estudiante = new Estudiante();
+        model.addAttribute("programasaca", programa_academico);
         model.addAttribute("titulo", "Nuevo estudiante");
         model.addAttribute("accion", "Agregar");
-        model.addAttribute("estudiante", new Estudiante());
+        model.addAttribute("estudiante", estudiante);
         return "estudiante/formulario_estudiante";
     }
 
     @PostMapping("/estudianteguardar")
-    public String estudianteGuardar(@Valid @ModelAttribute Estudiante estudiante, BindingResult result, RedirectAttributes flash, 
-            Model model, SessionStatus status) {
-
+    public String estudianteGuardar(@Valid @ModelAttribute Estudiante estudiante, BindingResult result, RedirectAttributes flash,
+            @RequestParam("programa_academico.id") Long programa_academicoId, Model model, SessionStatus status) {
+    
         String accion = (estudiante.getId() == null) ? "agregado" : "modificado";
-
+    
+        // Si hay errores en la validación
         if (result.hasErrors()) {
             model.addAttribute("titulo", "Nuevo estudiante");
             model.addAttribute("accion", accion);
-            model.addAttribute("info", "Complemente o corrija la información de los campos del formulario");
+            model.addAttribute("info", "Complete o corrija los campos del formulario.");
             return "estudiante/formulario_estudiante";
         }
-
+    
+        // Buscar el Programa Académico por ID
+        Programa_Academico programa_academico = academiaService.buscarPromAcaPorId(programa_academicoId);
+        if (programa_academico == null) {
+            flash.addFlashAttribute("error", "El programa académico seleccionado no existe.");
+            return "redirect:/academia/estudiantenuevo";
+        }
+    
+        // Asociar el Programa Académico al Estudiante
+        estudiante.setgetPrograma_academico(programa_academico);
+    
+        // Guardar el estudiante
         academiaService.guardarEstudiante(estudiante);
         status.setComplete();
-        flash.addFlashAttribute("success", "El estudiante fue "  + (estudiante.getId() == null ? "agregado" : "modificado") + " con éxito");
+    
+        // Añadir mensaje de éxito y redirigir
+        flash.addFlashAttribute("success", "El estudiante fue " + accion + " con éxito.");
         return "redirect:/academia/estudiantelistar";
     }
+    
 
     @GetMapping("/estudianteconsultar/{id}")
     public String estudianteConsultar(@PathVariable Long id, Model model, RedirectAttributes flash) {

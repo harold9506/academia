@@ -10,6 +10,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -40,6 +41,7 @@ public class Estudiante implements Serializable{
 	private Integer semestre_actual;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "programa_academico_id")
     private Programa_Academico programa_academico;
 
     @OneToMany(mappedBy = "estudiante", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -99,11 +101,11 @@ public class Estudiante implements Serializable{
         this.semestre_actual = semestre_actual;
     }
 
-    public Programa_Academico getPrograma_Academico() {
+    public Programa_Academico getPrograma_academico() {
         return programa_academico;
     }
 
-    public void setPrograma_Academico(Programa_Academico programa_academico) {
+    public void setgetPrograma_academico(Programa_Academico programa_academico) {
         this.programa_academico = programa_academico;
     }
 

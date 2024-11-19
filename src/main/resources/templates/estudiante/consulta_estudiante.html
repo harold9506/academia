@@ -20,6 +20,7 @@
           <li class="list-group-item"><b>Apellidos: </b><i th:text="${estudiante.apellidos}"></i></li>
           <li class="list-group-item"><b>Nombres: </b><i th:text="${estudiante.nombres}"></i></li>
           <li class="list-group-item"><b>Semestre Actual: </b><i th:text="${estudiante.semestre_actual}"></i></li>
+          <li class="list-group-item"><b>Programa Académico: </b><i th:text="${estudiante.programa_academico.nombre_programa}"></i></li>
         </ul>
 
         <table th:if="${not #lists.isEmpty(estudiante.curso_Matriculado)}" 

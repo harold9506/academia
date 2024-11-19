@@ -7,6 +7,7 @@ import com.desarrolloweb.academia.Model.entity.Curso;
 import com.desarrolloweb.academia.Model.entity.Curso_Matriculado;
 import com.desarrolloweb.academia.Model.entity.Estudiante;
 import com.desarrolloweb.academia.Model.entity.Profesor;
+import com.desarrolloweb.academia.Model.entity.Programa_Academico;
 
 public interface AcademiaServiceIface {
 
@@ -33,4 +34,8 @@ public interface AcademiaServiceIface {
 
 	//servicio profesor
 	public List<Profesor> buscarProfesoresTodos();
+
+	//servicio programa academico
+	public List<Programa_Academico>listarProgramasAca();
+	public Programa_Academico buscarPromAcaPorId(Long id);
 }

@@ -3,52 +3,79 @@
 <head th:replace="~{principal/principal :: head}"></head>
 <body>
 	<header th:replace="~{principal/principal :: header}"></header>
-	<div class="container  py-4">
-
+	<div class="container py-4">
 		<div class="card bg-light">
 			<div class="card-header">
-				<h3 class="text-secondary" th:text="${titulo}" ></h3>
+				<h3 class="text-secondary" th:text="${titulo}"></h3>
 			</div>
 			<div class="card-body shadow-lg p-3">
-				<h4 class="card-title">
-				</h4>
+				<h4 class="card-title"></h4>
 				<form th:action="@{/academia/estudianteguardar}" th:object="${estudiante}" method="post">
 
-					<div class="mb-3">
-						<label class="form-label">Identificación</label> 
-						<input type="text" th:field="*{identificacion}" class="form-control form-control-sm" />
-						<small class="form-text text-danger" th:if="${#fields.hasErrors('identificacion')}" th:errors="*{identificacion}"></small>
+					<!-- Identificación -->
+					<div class="mb-3 row">
+						<label for="identificacion" class="col-sm-3 col-form-label">Identificación</label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{identificacion}" class="form-control form-control-sm" />
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('identificacion')}" th:errors="*{identificacion}"></small>
+						</div>
 					</div>
 
-					<div class="mb-3">
-						<label class="form-label">Apellidos</label> 
-						<input type="text" th:field="*{apellidos}" class="form-control form-control-sm" /> 
-						<small class="form-text text-danger" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></small>
+					<!-- Apellidos -->
+					<div class="mb-3 row">
+						<label for="apellidos" class="col-sm-3 col-form-label">Apellidos</label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{apellidos}" class="form-control form-control-sm" />
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></small>
+						</div>
 					</div>
 
-                    <div class="mb-3">
-						<label class="form-label">Nombres</label> 
-						<input type="text" th:field="*{nombres}" class="form-control form-control-sm" /> 
-						<small class="form-text text-danger" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></small>
+					<!-- Nombres -->
+					<div class="mb-3 row">
+						<label for="nombres" class="col-sm-3 col-form-label">Nombres</label>
+						<div class="col-sm-9">
+							<input type="text" th:field="*{nombres}" class="form-control form-control-sm" />
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></small>
+						</div>
 					</div>
 
-                    <div class="mb-3">
-						<label class="form-label">Semestre Actual</label> 
-						<input type="number" th:field="*{semestre_actual}" class="form-control form-control-sm" /> 
-						<small class="form-text text-danger" th:if="${#fields.hasErrors('semestre_actual')}" th:errors="*{semestre_actual}"></small>
+					<!-- Semestre Actual -->
+					<div class="mb-3 row">
+						<label for="semestre_actual" class="col-sm-3 col-form-label">Semestre Actual</label>
+						<div class="col-sm-9">
+							<input type="number" th:field="*{semestre_actual}" class="form-control form-control-sm" />
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('semestre_actual')}" th:errors="*{semestre_actual}"></small>
+						</div>
 					</div>
 
-					<div>
-						<input type="submit" th:value="${accion} + ' Estudiante'" class="btn btn-outline-secondary btn-sm" />
+					<!-- Programa Académico -->
+					<div class="mb-3 row">
+                        <label class="col-sm-3 col-form-label" for="programa_academico" th:text="'Programa Académico'"></label>
+                        <div class="col-sm-9">
+							<select name="programa_academico.id" class="form-control" required>
+								<option value="">Seleccione un programa académico</option>
+								<th:block th:each="programa : ${programasaca}">
+									<option th:value="${programa.id}" th:text="${programa.nombre_programa}"></option>
+								</th:block>
+							</select>
+                        </div>
+                    </div>	
+
+					<!-- Botón de envío -->
+					<div class="mb-3 row">
+						<div class="col-sm-9 offset-sm-3">
+							<input type="submit" th:value="${accion} + ' Estudiante'" class="btn btn-outline-secondary btn-sm" />
+						</div>
 					</div>
-                    <div class="text-right mt-3">
-                        <a th:href="@{/academia/estudiantelistar}" class="btn btn-sm btn-light">&laquo; Regresar</a>
-                    </div>
+
+					<!-- Enlace para regresar -->
+					<div class="text-right mt-3">
+						<a th:href="@{/academia/estudiantelistar}" class="btn btn-sm btn-light">&laquo; Regresar</a>
+					</div>
 				</form>
-
 			</div>
 		</div>
 	</div>
 	<footer th:replace="~{principal/principal :: footer}"></footer>
 </body>
-</html>  
+</html>
