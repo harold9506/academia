@@ -11,6 +11,9 @@
 			<div th:if="${success}" class="alert alert-success">
 				<p th:text="${success}"></p>
 			</div>
+			<div th:if="${error}" class="alert alert-danger">
+				<p th:text="${error}"></p>
+			</div>
 			<div class="card-body shadow-lg p-3">
 				<h4 class="card-title">
 					<a class="btn btn-outline-success btn-sm" th:href="@{/academia/estudiantenuevo}">Crear estudiante</a>
@@ -33,7 +36,7 @@
 						<td th:text="${#numbers.formatInteger(est.semestre_actual, 1, 'POINT')}" class="text-center pr-2"></td>
 						<td class="text-center">
 							<a th:href="@{/academia/matricular_curso/} + ${est.id}" title="matricular">
-								<i class="bi bi-folder2-open" style="color: rgb(226, 157, 8)"></i></a>&nbsp;
+								<i class="bi bi-folder2-open" style="color: rgb(226, 168, 8)"></i></a>&nbsp;
 							<a th:href="@{/academia/estudiantemodificar/} + ${est.id}" title="editar">
 								<i class="bi-pencil-fill" style="color: cornflowerblue"></i></a>&nbsp;
 							<a th:href="@{/academia/estudianteeliminar/} + ${est.id}" title="eliminar"

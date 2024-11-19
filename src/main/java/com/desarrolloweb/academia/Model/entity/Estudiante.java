@@ -105,7 +105,7 @@ public class Estudiante implements Serializable{
         return programa_academico;
     }
 
-    public void setgetPrograma_academico(Programa_Academico programa_academico) {
+    public void setPrograma_academico(Programa_Academico programa_academico) {
         this.programa_academico = programa_academico;
     }
 

@@ -83,7 +83,7 @@ public class EstudianteController {
         }
     
         // Asociar el Programa Académico al Estudiante
-        estudiante.setgetPrograma_academico(programa_academico);
+        estudiante.setPrograma_academico(programa_academico);
     
         // Guardar el estudiante
         academiaService.guardarEstudiante(estudiante);
@@ -128,6 +128,9 @@ public class EstudianteController {
 
     @GetMapping("/estudiantemodificar/{id}")
     public String estudianteFormModificar(@PathVariable(value = "id") Long id, Model model) {
+
+        List<Programa_Academico> programa_academico = academiaService.listarProgramasAca();
+
         Estudiante estudiante = null;
         if (id > 0) {
             estudiante = academiaService.buscarEstudiantePorId(id);
@@ -138,6 +141,7 @@ public class EstudianteController {
         model.addAttribute("accion", "Modificar");
         model.addAttribute("titulo", "Modificar estudiante");
         model.addAttribute("estudiante", estudiante);
+        model.addAttribute("programasaca", programa_academico);
         return "estudiante/formulario_estudiante";
     }
 

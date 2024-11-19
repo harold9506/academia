@@ -171,6 +171,49 @@ public class Curso_MatriculadoController {
             model.addAttribute("error", "El estudiante seleccionado no existe.");
             return "matricular_curso/matricula_nueva";
         }
+
+        // Obtener la asignatura del curso
+        Asignatura asignatura = curso.getAsignatura();
+
+        // 1. Validar que la asignatura no haya sido cursada previamente
+        boolean asignaturaCursada = estudiante.getCurso_Matriculado().stream()
+            .anyMatch(m -> m.getCurso().getAsignatura().getId().equals(asignatura.getId()) 
+                        && m.getEstado_curso().equalsIgnoreCase("Inscrito"));
+
+        if (asignaturaCursada) {
+            model.addAttribute("titulo", "Nueva matrícula");
+            model.addAttribute("error", "Ya esta inscrita la asignatura " + asignatura.getNombre() + ".");
+            return "matricular_curso/matricula_nueva";
+        }
+
+        // 2. Validar prerrequisitos
+        if (asignatura.getAsignatura_Planes() != null) {
+            Long idPrerrequisito = asignatura.getAsignatura_Planes().get(0).getPrerrequisito();
+            if (idPrerrequisito != null) {
+                boolean prerrequisitoCumplido = estudiante.getCurso_Matriculado().stream()
+                    .anyMatch(m -> m.getCurso().getAsignatura().getId().equals(idPrerrequisito) 
+                                && m.getEstado_curso().equalsIgnoreCase("Inscrito"));
+
+                if (!prerrequisitoCumplido) {
+                    model.addAttribute("titulo", "Nueva matrícula");
+                    model.addAttribute("error", "Debes aprobar el prerrequisito antes de matricular esta asignatura.");
+                    return "matricular_curso/matricula_nueva";
+                }
+            }
+        }
+
+        // 3. Validar que no exceda 22 créditos
+        int totalCreditos = estudiante.getCurso_Matriculado().stream()
+            .mapToInt(m -> m.getCurso().getAsignatura().getNumero_creditos())
+            .sum();
+
+        if (totalCreditos + asignatura.getNumero_creditos() > 22) {
+            model.addAttribute("titulo", "Nueva matrícula");
+            model.addAttribute("error", "No puedes exceder el límite de 22 créditos por semestre.");
+            return "matricular_curso/matricula_nueva";
+        }
+
+
     
         // Crear objeto de Curso_Matriculado
         Curso_Matriculado matricula = new Curso_Matriculado();
