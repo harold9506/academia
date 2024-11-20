@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -141,7 +142,7 @@ public class Curso_MatriculadoController {
 
     @PostMapping("/guardar_matricula")
     public String guardarMatricula(@RequestParam("estado_curso") String estadoCurso, @RequestParam("curso.id") Long cursoId, @RequestParam("curso_matriculado.nota_final") Double notaFinal,
-        @RequestParam("estudiante.id") Long estudianteId, RedirectAttributes flash, Model model, SessionStatus status) {
+        @RequestParam("estudiante.id") Long estudianteId, BindingResult result, RedirectAttributes flash, Model model, SessionStatus status) {
         
         // Validar que se haya enviado el ID del estudiante
         if (estudianteId == null) {
@@ -155,6 +156,13 @@ public class Curso_MatriculadoController {
             model.addAttribute("error", "Debe seleccionar un curso válido.");
             return "matricular_curso/matricula_nueva";
         }
+
+        if (notaFinal == null || notaFinal < 0 || notaFinal > 5) {
+            model.addAttribute("error", "Debe ingresar una nota válida entre 0 y 5.");
+            model.addAttribute("titulo", "Nueva matrícula");
+            return "matricular_curso/matricula_nueva"; // Redirigir al formulario
+        }
+
     
         // Obtener curso asociado desde la base de datos
         Curso curso = academiaService.buscarCursoPorId(cursoId);
@@ -177,8 +185,10 @@ public class Curso_MatriculadoController {
 
         // 1. Validar que la asignatura no haya sido cursada previamente
         boolean asignaturaCursada = estudiante.getCurso_Matriculado().stream()
-            .anyMatch(m -> m.getCurso().getAsignatura().getId().equals(asignatura.getId()) 
-                        && m.getEstado_curso().equalsIgnoreCase("Inscrito"));
+        .anyMatch(m -> m.getCurso().getAsignatura().getId().equals(asignatura.getId()) 
+                    && List.of("inscrito", "en curso", "completado")
+                        .contains(m.getEstado_curso().toLowerCase()));
+    
 
         if (asignaturaCursada) {
             model.addAttribute("titulo", "Nueva matrícula");
@@ -186,13 +196,15 @@ public class Curso_MatriculadoController {
             return "matricular_curso/matricula_nueva";
         }
 
+        List<String> ESTADOS_VALIDOS_PRERREQUISITO = List.of("Inscrito", "En curso", "Completado");
         // 2. Validar prerrequisitos
         if (asignatura.getAsignatura_Planes() != null) {
             Long idPrerrequisito = asignatura.getAsignatura_Planes().get(0).getPrerrequisito();
             if (idPrerrequisito != null) {
+                // Validar que el prerrequisito esté cumplido
                 boolean prerrequisitoCumplido = estudiante.getCurso_Matriculado().stream()
-                    .anyMatch(m -> m.getCurso().getAsignatura().getId().equals(idPrerrequisito) 
-                                && m.getEstado_curso().equalsIgnoreCase("Inscrito"));
+                    .anyMatch(m -> m.getCurso().getAsignatura().getId().equals(idPrerrequisito)
+                                && ESTADOS_VALIDOS_PRERREQUISITO.contains(m.getEstado_curso()));
 
                 if (!prerrequisitoCumplido) {
                     model.addAttribute("titulo", "Nueva matrícula");
@@ -212,8 +224,6 @@ public class Curso_MatriculadoController {
             model.addAttribute("error", "No puedes exceder el límite de 22 créditos por semestre.");
             return "matricular_curso/matricula_nueva";
         }
-
-
     
         // Crear objeto de Curso_Matriculado
         Curso_Matriculado matricula = new Curso_Matriculado();

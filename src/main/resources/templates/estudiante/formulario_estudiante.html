@@ -16,7 +16,7 @@
 					<div class="mb-3 row">
 						<label for="identificacion" class="col-sm-3 col-form-label">Identificación</label>
 						<div class="col-sm-9">
-							<input type="text" th:field="*{identificacion}" class="form-control form-control-sm" />
+							<input type="number" th:field="*{identificacion}" class="form-control form-control-sm"   maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10);"  />
 							<small class="form-text text-danger" th:if="${#fields.hasErrors('identificacion')}" th:errors="*{identificacion}"></small>
 						</div>
 					</div>
@@ -25,7 +25,7 @@
 					<div class="mb-3 row">
 						<label for="apellidos" class="col-sm-3 col-form-label">Apellidos</label>
 						<div class="col-sm-9">
-							<input type="text" th:field="*{apellidos}" class="form-control form-control-sm" />
+							<input type="text" th:field="*{apellidos}" class="form-control form-control-sm" pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+"  oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ ]/g, '').slice(0, 50);"/>
 							<small class="form-text text-danger" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></small>
 						</div>
 					</div>
@@ -34,7 +34,7 @@
 					<div class="mb-3 row">
 						<label for="nombres" class="col-sm-3 col-form-label">Nombres</label>
 						<div class="col-sm-9">
-							<input type="text" th:field="*{nombres}" class="form-control form-control-sm" />
+							<input type="text" th:field="*{nombres}" class="form-control form-control-sm"  pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ ]+"  oninput="this.value = this.value.replace(/[^A-Za-zÁÉÍÓÚáéíóúÑñ ]/g, '').slice(0, 50);"/>
 							<small class="form-text text-danger" th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}"></small>
 						</div>
 					</div>
@@ -43,7 +43,7 @@
 					<div class="mb-3 row">
 						<label for="semestre_actual" class="col-sm-3 col-form-label">Semestre Actual</label>
 						<div class="col-sm-9">
-							<input type="number" th:field="*{semestre_actual}" class="form-control form-control-sm" />
+							<input type="number" th:field="*{semestre_actual}" class="form-control form-control-sm"  max="10" min="0" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 1);"/>
 							<small class="form-text text-danger" th:if="${#fields.hasErrors('semestre_actual')}" th:errors="*{semestre_actual}"></small>
 						</div>
 					</div>

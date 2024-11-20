@@ -69,9 +69,11 @@ public class EstudianteController {
     
         // Si hay errores en la validación
         if (result.hasErrors()) {
+            List<Programa_Academico> programa_academico = academiaService.listarProgramasAca();
             model.addAttribute("titulo", "Nuevo estudiante");
             model.addAttribute("accion", accion);
             model.addAttribute("info", "Complete o corrija los campos del formulario.");
+            model.addAttribute("programasaca", programa_academico);
             return "estudiante/formulario_estudiante";
         }
     

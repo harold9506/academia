@@ -19,7 +19,7 @@
                     <a th:href="@{/academia/estudianteconsultar/} + ${matricula.estudiante.id}" title="regresar"
                        class="btn btn-light btn-sm">&laquo; Regresar</a>
                 </h4>
-                <form method="post" th:object="${matricula}" th:action="@{/academia/guardar_matricula}">
+                <form method="post" th:object="${matricula}" th:action="@{/academia/guardar_matricula}" onsubmit="return validarFormulario();">
 					<input type="hidden" name="estudiante.id" th:value="${matricula.estudiante.id}" />
 
                     <!-- Estudiante -->
@@ -40,6 +40,9 @@
 									<option th:value="${asignatura.id}" th:text="${asignatura.nombre}"></option>
 								</th:block>
 							</select>
+							<div class="invalid-feedback" id="error-asignatura">
+								Por favor seleccione una asignatura.
+							</div>
                         </div>
                     </div>
 
@@ -115,7 +118,12 @@
 					<div class="mb-3 row">
 						<label class="col-sm-3 col-form-label" th:text="'Nota Final'"></label>
 						<div class="col-sm-9">
-							<input type="number" id="nota_final" name="curso_matriculado.nota_final" class="form-control" min="0" max="10" />
+							<input type="number" id="nota_final" name="curso_matriculado.nota_final" 
+								   class="form-control" min="0" max="5" required
+								   oninput="validarNotaFinal(); this.value = this.value.replace(/[^0-5]/g, '').slice(0, 1);" />
+							<div class="invalid-feedback" id="error-nota-final" style="display: none;">
+								Por favor ingrese una nota entre 0 y 5.
+							</div>
 						</div>
 					</div>
 
@@ -165,7 +173,38 @@
 			} else {
 				console.log("No se ha seleccionado una asignatura");
 			}
-		}	
+		}
+
+		function validarNotaFinal() {
+        var nota = document.getElementById("nota_final").value;
+        var errorDiv = document.getElementById("error-nota-final");
+        var input = document.getElementById("nota_final");
+
+        // Validar que la nota esté dentro del rango permitido
+        if (nota < 0 || nota > 5) {
+            errorDiv.style.display = "block";  // Mostrar mensaje de error
+            input.classList.add("is-invalid");  // Agregar clase de error
+        } else {
+            errorDiv.style.display = "none";   // Ocultar mensaje de error
+            input.classList.remove("is-invalid");  // Remover clase de error
+        }
+    }
+		function validarFormulario() {
+		const esValidaNota = validarNotaFinal();
+        const asignatura = document.getElementById("asignatura").value;
+
+        // Validar si no se ha seleccionado una asignatura
+        if (!asignatura) {
+            const errorAsignatura = document.getElementById("error-asignatura");
+            errorAsignatura.style.display = "block"; // Mostrar el error
+            return false; // Detener el envío del formulario
+        }
+
+        // Ocultar error si todo está correcto
+        document.getElementById("error-asignatura").style.display = "none";
+		return esValidaNota;
+        return true; // Permitir el envío del formulario
+    }	
     </script>
 </body>
 </html>
