@@ -47,10 +47,8 @@ public class EstudianteController {
         return "estudiante/listado_estudiantes";
     }
 
-    //nuevo
     @GetMapping("/estudiantenuevo")
     public String estudianteNuevo(Model model) {
-        //mostrar los programas academicos
         List<Programa_Academico> programa_academico = academiaService.listarProgramasAca();
 
         Estudiante estudiante = new Estudiante();
@@ -67,7 +65,6 @@ public class EstudianteController {
     
         String accion = (estudiante.getId() == null) ? "agregado" : "modificado";
     
-        // Si hay errores en la validación
         if (result.hasErrors()) {
             List<Programa_Academico> programa_academico = academiaService.listarProgramasAca();
             model.addAttribute("titulo", "Nuevo estudiante");
@@ -77,21 +74,15 @@ public class EstudianteController {
             return "estudiante/formulario_estudiante";
         }
     
-        // Buscar el Programa Académico por ID
         Programa_Academico programa_academico = academiaService.buscarPromAcaPorId(programa_academicoId);
         if (programa_academico == null) {
             flash.addFlashAttribute("error", "El programa académico seleccionado no existe.");
             return "redirect:/academia/estudiantenuevo";
         }
     
-        // Asociar el Programa Académico al Estudiante
         estudiante.setPrograma_academico(programa_academico);
-    
-        // Guardar el estudiante
         academiaService.guardarEstudiante(estudiante);
         status.setComplete();
-    
-        // Añadir mensaje de éxito y redirigir
         flash.addFlashAttribute("success", "El estudiante fue " + accion + " con éxito.");
         return "redirect:/academia/estudiantelistar";
     }

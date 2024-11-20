@@ -22,7 +22,6 @@
                 <form method="post" th:object="${matricula}" th:action="@{/academia/guardar_matricula}" onsubmit="return validarFormulario();">
 					<input type="hidden" name="estudiante.id" th:value="${matricula.estudiante.id}" />
 
-                    <!-- Estudiante -->
                     <div class="mb-3 row">
                         <label class="col-sm-3 col-form-label" th:text="'Estudiante'"></label>
                         <div class="col-sm-9">
@@ -30,7 +29,6 @@
                         </div>
                     </div>
 					
-                    <!-- Selección de asignatura -->
                     <div class="mb-3 row">
                         <label class="col-sm-3 col-form-label" for="asignatura" th:text="'Asignatura'"></label>
                         <div class="col-sm-9">
@@ -46,7 +44,6 @@
                         </div>
                     </div>
 
-                    <!-- Créditos de la asignatura -->
 					<div class="mb-3 row">
 						<label for="col-sm-3 col-form-label" th:text="'Créditos'" class="col-sm-3 col-form-label"></label>
 						<div class="col-sm-9">
@@ -62,7 +59,6 @@
                         </div>
                     </div>
 
-                    <!-- Detalles del curso -->
 					<div class="mb-3 row">
 						<label class="col-sm-3 col-form-label" th:text="'ID Curso'"></label>
 						<div class="col-sm-9">
@@ -97,8 +93,6 @@
 							<input type="text" id="aula" name="curso.aula" class="form-control" readonly/>
 						</div>
 					</div>
-
-					<!-- Nota Final -->
 
 					<div class="mb-3 row">
 						<label class="col-sm-3 col-form-label" th:text="'Estado del Curso'"></label>
@@ -144,7 +138,6 @@
 			console.log("ID de la asignatura seleccionada:", asignaturaId);
 
 			if (asignaturaId) {
-				// Primero, obtener detalles de la asignatura
 				fetch('/academia/obtenerDetallesAsignatura/' + asignaturaId)
 					.then(response => response.json())
 					.then(data => {
@@ -156,7 +149,6 @@
 						console.error('Error al obtener detalles de la asignatura:', error);
 					});
 
-				// Luego, obtener detalles del curso asociado a la asignatura
 				fetch('/academia/obtenerDetallesCursoPorAsignatura/' + asignaturaId)
 					.then(response => response.json())
 					.then(data => {
@@ -180,20 +172,18 @@
         var errorDiv = document.getElementById("error-nota-final");
         var input = document.getElementById("nota_final");
 
-        // Validar que la nota esté dentro del rango permitido
         if (nota < 0 || nota > 5) {
-            errorDiv.style.display = "block";  // Mostrar mensaje de error
-            input.classList.add("is-invalid");  // Agregar clase de error
+            errorDiv.style.display = "block";  
+            input.classList.add("is-invalid");  
         } else {
-            errorDiv.style.display = "none";   // Ocultar mensaje de error
-            input.classList.remove("is-invalid");  // Remover clase de error
+            errorDiv.style.display = "none";   
+            input.classList.remove("is-invalid");  
         }
     }
 		function validarFormulario() {
 		const esValidaNota = validarNotaFinal();
         const asignatura = document.getElementById("asignatura").value;
 
-        // Validar si no se ha seleccionado una asignatura
         if (!asignatura) {
             const errorAsignatura = document.getElementById("error-asignatura");
             errorAsignatura.style.display = "block"; // Mostrar el error

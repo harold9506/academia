@@ -12,7 +12,6 @@
 				<h4 class="card-title"></h4>
 				<form th:action="@{/academia/estudianteguardar}" th:object="${estudiante}" method="post">
 
-					<!-- Identificación -->
 					<div class="mb-3 row">
 						<label for="identificacion" class="col-sm-3 col-form-label">Identificación</label>
 						<div class="col-sm-9">
@@ -21,7 +20,6 @@
 						</div>
 					</div>
 
-					<!-- Apellidos -->
 					<div class="mb-3 row">
 						<label for="apellidos" class="col-sm-3 col-form-label">Apellidos</label>
 						<div class="col-sm-9">
@@ -30,7 +28,6 @@
 						</div>
 					</div>
 
-					<!-- Nombres -->
 					<div class="mb-3 row">
 						<label for="nombres" class="col-sm-3 col-form-label">Nombres</label>
 						<div class="col-sm-9">
@@ -39,7 +36,6 @@
 						</div>
 					</div>
 
-					<!-- Semestre Actual -->
 					<div class="mb-3 row">
 						<label for="semestre_actual" class="col-sm-3 col-form-label">Semestre Actual</label>
 						<div class="col-sm-9">
@@ -48,7 +44,6 @@
 						</div>
 					</div>
 
-					<!-- Programa Académico -->
 					<div class="mb-3 row">
                         <label class="col-sm-3 col-form-label" for="programa_academico" th:text="'Programa Académico'"></label>
                         <div class="col-sm-9">
@@ -61,14 +56,12 @@
                         </div>
                     </div>	
 
-					<!-- Botón de envío -->
 					<div class="mb-3 row">
 						<div class="col-sm-9 offset-sm-3">
 							<input type="submit" th:value="${accion} + ' Estudiante'" class="btn btn-outline-secondary btn-sm" />
 						</div>
 					</div>
 
-					<!-- Enlace para regresar -->
 					<div class="text-right mt-3">
 						<a th:href="@{/academia/estudiantelistar}" class="btn btn-sm btn-light">&laquo; Regresar</a>
 					</div>

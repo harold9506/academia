@@ -37,7 +37,6 @@ public class Curso_Matriculado implements Serializable {
     @Column(nullable = false)
     private Double nota_final;
 
-    // Constructor y Getters/Setters
     public Curso_Matriculado() {
     }
 
